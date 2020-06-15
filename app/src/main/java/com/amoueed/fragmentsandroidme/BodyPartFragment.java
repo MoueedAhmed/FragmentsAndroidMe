@@ -1,6 +1,7 @@
 package com.amoueed.fragmentsandroidme;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,16 @@ import androidx.fragment.app.Fragment;
 
 import com.amoueed.fragmentsandroidme.data.AndroidImageAssets;
 
+import java.util.List;
+
 public class BodyPartFragment extends Fragment {
+
+    // Tag for logging
+    private static final String TAG = "BodyPartFragment";
+
+    // Variables to store a list of image resources and the index of the image that this fragment displays
+    private List<Integer> mImageIds;
+    private int mListIndex;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the fragment
@@ -30,11 +40,28 @@ public class BodyPartFragment extends Fragment {
         // Get a reference to the ImageView in the fragment layout
         ImageView imageView = (ImageView) rootView.findViewById(R.id.body_part_image_view);
 
-        // Set the image to the first in our list of head images
-        imageView.setImageResource(AndroidImageAssets.getHeads().get(0));
+        // If a list of image ids exists, set the image resource to the correct item in that list
+        // Otherwise, create a Log statement that indicates that the list was not found
+        if(mImageIds != null){
+            // Set the image resource to the list item at the stored index
+            imageView.setImageResource(mImageIds.get(mListIndex));
+        } else {
+            Log.v(TAG, "This fragment has a null list of image id's");
+        }
 
         // Return the rootView
         return rootView;
+    }
+
+    // Setter methods for keeping track of the list images this fragment can display and which image
+    // in the list is currently being displayed
+
+    public void setImageIds(List<Integer> imageIds) {
+        mImageIds = imageIds;
+    }
+
+    public void setListIndex(int index) {
+        mListIndex = index;
     }
 
 }
